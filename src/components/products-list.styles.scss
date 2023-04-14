@@ -1,0 +1,17 @@
+.app-main-container{
+    // background-color: yellow;
+    margin-top: 10px;
+
+    .app-title{
+        min-width: 100%;
+        font-size: 3.5em;
+        font-weight: bold;
+    }
+
+    @media (max-width: 600px) {
+        .app-title{
+            font-size: 2.5em;
+
+        }
+    }
+}

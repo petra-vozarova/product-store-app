@@ -1,8 +1,92 @@
 import { render, screen } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
 import App from './App';
+import populateData from './utils/dummyjson.utils';
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
-});
+const mockProducts = {
+  "products": [
+    {
+        "id": 1,
+        "title": "iPhone 9",
+        "description": "An apple mobile which is nothing like apple",
+        "price": 549,
+        "discountPercentage": 12.96,
+        "rating": 4.69,
+        "stock": 94,
+        "brand": "Apple",
+        "category": "smartphones",
+        "thumbnail": "https://i.dummyjson.com/data/products/1/thumbnail.jpg",
+        "images": [
+            "https://i.dummyjson.com/data/products/1/1.jpg",
+            "https://i.dummyjson.com/data/products/1/2.jpg",
+            "https://i.dummyjson.com/data/products/1/3.jpg",
+            "https://i.dummyjson.com/data/products/1/4.jpg",
+            "https://i.dummyjson.com/data/products/1/thumbnail.jpg"
+        ]
+    },
+    {
+        "id": 2,
+        "title": "iPhone X",
+        "description": "SIM-Free, Model A19211 6.5-inch Super Retina HD display with OLED technology A12 Bionic chip with ...",
+        "price": 899,
+        "discountPercentage": 17.94,
+        "rating": 4.44,
+        "stock": 34,
+        "brand": "Apple",
+        "category": "smartphones",
+        "thumbnail": "https://i.dummyjson.com/data/products/2/thumbnail.jpg",
+        "images": [
+            "https://i.dummyjson.com/data/products/2/1.jpg",
+            "https://i.dummyjson.com/data/products/2/2.jpg",
+            "https://i.dummyjson.com/data/products/2/3.jpg",
+            "https://i.dummyjson.com/data/products/2/thumbnail.jpg"
+        ]
+    },
+  ]
+}
+
+
+describe('Testing our app upon loading and mocking api call', () => {
+  
+  global.fetch = () => 
+  Promise.resolve({
+    json: () => Promise.resolve(mockProducts)
+  })
+
+  test('should render components upon loading the page', () => {
+    const {getByTestId} = render(
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    );
+  
+    const titleElement = screen.getByText(/products catalogue/i);
+    expect(titleElement).toBeInTheDocument();
+  
+    const button = screen.getByRole('button');
+    expect(button).toBeInTheDocument()
+  
+    const buttonElement = screen.getByText(/1/i);
+    expect(buttonElement).toBeInTheDocument();
+  
+    const productPreview = getByTestId("app-container");
+    expect(productPreview).toBeDefined()
+  
+  });
+    
+  test('should mock api call and get data back', async () => {
+    render(
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    );
+  
+    const data = await populateData();
+  
+    expect(data.products.length).toBe(2);
+  });
+})
+
+
+
+

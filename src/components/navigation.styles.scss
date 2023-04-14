@@ -1,0 +1,24 @@
+.navigation-container{
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    background-color: white;
+    height: 60px;
+
+    .buttons-container{
+        display: flex;
+        flex-direction: row;
+        max-width: 700px;
+        // background-color: red;
+        margin: auto;
+        min-width: 350px;
+        width: 70%;
+        justify-content: space-between;
+    }
+    
+    @media (max-width: 600px){
+        .buttons-container{
+            width: 90%;
+        }
+    }
+}
